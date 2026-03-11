@@ -1,0 +1,263 @@
+:root {
+    --primary: #00f3ff;
+    --secondary: #bc13fe;
+    --bg-dark: #050510;
+    --glass: rgba(5, 5, 16, 0.85);
+    --danger: #ff2a2a;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* { box-sizing: border-box; user-select: none; }
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    font-family: var(--font-main);
+    color: white;
+}
+
+/* --- Canvas --- */
+#game-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* --- UI Layer --- */
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.interactive {
+    pointer-events: auto;
+}
+
+/* --- Screens --- */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(0,20,40,0.9) 0%, rgba(0,0,0,1) 100%);
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: white;
+    text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+    font-style: italic;
+}
+
+.btn {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    margin: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.2s;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: black;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+.btn:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    background: rgba(0,0,0,0.5);
+    border: 2px solid var(--secondary);
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 200px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    box-shadow: 0 0 15px var(--secondary);
+}
+
+/* --- HUD --- */
+#hud-screen {
+    justify-content: space-between;
+    align-items: stretch;
+    background: none;
+    pointer-events: none;
+}
+
+.hud-top-left, .hud-top-right, .hud-bottom-left, .hud-bottom-right {
+    position: absolute;
+    padding: 20px;
+}
+
+.hud-top-left { top: 0; left: 0; }
+.hud-top-right { top: 0; right: 0; text-align: right; }
+.hud-bottom-left { bottom: 0; left: 0; }
+.hud-bottom-right { bottom: 0; right: 0; }
+
+.stat-box {
+    background: var(--glass);
+    padding: 10px 20px;
+    border-left: 4px solid var(--primary);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#health-bar-container {
+    width: 300px;
+    height: 20px;
+    background: #333;
+    border: 1px solid white;
+    margin-top: 5px;
+}
+
+#health-fill {
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.2s, background 0.2s;
+}
+
+#crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+#crosshair::before, #crosshair::after {
+    content: '';
+    position: absolute;
+    background: var(--primary);
+}
+#crosshair::before { top: 9px; left: 0; width: 20px; height: 2px; }
+#crosshair::after { top: 0; left: 9px; width: 2px; height: 20px; }
+
+/* --- Notifications --- */
+#toast-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.toast {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    animation: fadeOut 3s forwards;
+    font-size: 0.9rem;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+}
+
+/* --- Lobby List --- */
+#player-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+}
+#player-list li {
+    padding: 10px;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+/* Hit Marker */
+#hit-marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+#hit-marker::before, #hit-marker::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 2px;
+}
+#hit-marker::before { top: 14px; left: 0; width: 30px; height: 2px; }
+#hit-marker::after { top: 0; left: 14px; width: 2px; height: 30px; }
+
+/* Kill Feed */
+#kill-feed {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.kill-msg {
+    font-size: 0.8rem;
+    color: #ddd;
+    text-shadow: 1px 1px 0 #000;
+}
+.kill-name { font-weight: bold; color: var(--secondary); }
