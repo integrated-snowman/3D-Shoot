@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>CodeStrike 3D</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Import Map for CDN Libraries -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "peerjs": "https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- 3D Canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- UI Overlay -->
+    <div id="ui-layer">
+        
+        <!-- Main Menu -->
+        <div id="menu-screen" class="screen interactive">
+            <h1>CodeStrike 3D</h1>
+            <p style="color: #aaa; margin-bottom: 30px;">Low-Latency P2P Browser Shooter</p>
+            
+            <div class="menu-controls">
+                <button id="btn-create" class="btn">Create Match</button>
+                
+                <div class="input-group">
+                    <input type="text" id="input-code" placeholder="CODE" maxlength="6">
+                    <button id="btn-join" class="btn">Join Match</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px; font-size: 0.8rem; color: #666;">
+                WASD to Move | SPACE to Jump | CLICK to Shoot
+            </div>
+        </div>
+
+        <!-- Lobby Screen -->
+        <div id="lobby-screen" class="screen interactive hidden">
+            <h2 id="lobby-title">Lobby</h2>
+            <h3 id="lobby-code-display" style="color: var(--primary); font-size: 2rem; margin: 10px 0;"></h3>
+            
+            <ul id="player-list"></ul>
+
+            <div id="lobby-msg" style="height: 20px; color: var(--secondary); margin-bottom: 10px;"></div>
+
+            <button id="btn-start-game" class="btn">Start Game</button>
+            <button id="btn-leave-lobby" class="btn" style="border-color: #555; color: #aaa; font-size: 0.9rem;">Leave</button>
+        </div>
+
+        <!-- Gameplay HUD -->
+        <div id="hud-screen" class="screen hidden">
+            <div class="hud-top-left">
+                <div class="stat-box">HP <span id="hp-val">100</span></div>
+                <div id="health-bar-container"><div id="health-fill"></div></div>
+            </div>
+            
+            <div class="hud-top-right">
+                <div id="ping-display" class="stat-box">Ping: -- ms</div>
+                <div id="kill-feed"></div>
+            </div>
+
+            <div id="crosshair"></div>
+            <div id="hit-marker"></div>
+
+            <div class="hud-bottom-right">
+                <div class="stat-box">AMMO <span style="color:var(--primary)">∞</span></div>
+            </div>
+            
+            <div id="toast-container"></div>
+        </div>
+
+        <!-- Respawn Overlay -->
+        <div id="respawn-screen" class="screen interactive hidden" style="background: rgba(255, 0, 0, 0.2);">
+            <h1 style="color: var(--danger); text-shadow: 0 0 10px red;">ELIMINATED</h1>
+            <h2 id="respawn-timer">Respawning in 3...</h2>
+        </div>
+
+    </div>
+
+    <!-- Application Entry Point -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
